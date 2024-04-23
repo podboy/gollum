@@ -13,6 +13,10 @@ RUN apk add --update \
 COPY Gemfile* /tmp/
 COPY gollum.gemspec* /tmp/
 WORKDIR /tmp
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
+RUN gem sources --add https://mirrors.tuna.tsinghua.edu.cn/rubygems/ --remove https://rubygems.org/ && gem sources -l
+RUN bundle config mirror.https://rubygems.org https://mirrors.tuna.tsinghua.edu.cn/rubygems/
+# RUN bundle config --delete mirror.https://rubygems.org && bundle config
 RUN bundle install
 
 RUN gem install \
@@ -26,6 +30,8 @@ RUN gem install \
 
 WORKDIR /app
 COPY . /app
+RUN bundle exec rake test
+# RUN bundle exec rake test:capybara
 RUN bundle exec rake install
 
 FROM ruby:3.1-alpine
@@ -36,6 +42,7 @@ ARG GID=${GID:-1000}
 COPY --from=builder /usr/local/bundle/ /usr/local/bundle/
 
 WORKDIR /wiki
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 RUN apk add --update \
             --no-cache \
             bash \
