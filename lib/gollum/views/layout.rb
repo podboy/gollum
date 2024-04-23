@@ -11,6 +11,7 @@ module Precious
       include Precious::Views::OcticonHelpers
 
       attr_reader :name, :path
+      attr_writer :default_locale
 
       self.extend Precious::Views::TemplateCascade
 
@@ -96,6 +97,32 @@ module Precious
 
       def latest_changes
         false
+      end
+
+      def default_locale
+        @default_locale
+      end
+
+      def locales
+        Gollum::LOCALES.map do |lang|
+          { :name => lang,
+            :selected => default_locale == lang
+          }
+        end
+      end
+
+      private
+
+      def default_locale=(new_locale)
+        @default_locale = new_locale
+        case new_locale
+        when 'English'
+          ::I18n.default_locale = :en
+        when '简体中文'
+          ::I18n.default_locale = :cn
+        else
+          # nothing to do
+        end
       end
 
     end

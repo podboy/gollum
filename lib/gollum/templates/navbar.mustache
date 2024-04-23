@@ -11,6 +11,31 @@
   </div>
 
   <div class="TableObject-item hide-sm hide-md">
+      <div id="locale-selector"> 
+        <input type="hidden" id="locale" name="locale" value={{locale}}>
+        <details class="details-reset details-overlay">
+          <summary class="btn btn-sm btn-block" aria-haspopup="true">
+            <span class="mr-1">{{default_locale}}</span>
+            <div class="dropdown-caret"></div>
+          </summary>
+          <div id="locales" class="SelectMenu BasicSelect">
+            <div class="SelectMenu-modal">
+              <div class="SelectMenu-list">
+                {{#locales}}
+                <button class="SelectMenu-item" role="menuitemcheckbox" {{#selected}}aria-checked="true"{{/selected}} value="{{name}}">
+                  <!-- <%= octicon "check", class: "SelectMenu-icon SelectMenu-icon--check" %> -->
+                  {{#octicon}}check 16 16 SelectMenu-icon SelectMenu-icon--check{{/octicon}}
+                  {{name}}
+                </button>
+                {{/locales}}
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
+  </div>
+
+  <div class="TableObject-item hide-sm hide-md">
     <button class="btn btn-sm" id="minibutton-home" 
       onclick="window.location.href='{{page_route}}';"
     >
