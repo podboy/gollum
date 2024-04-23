@@ -98,6 +98,18 @@ module Precious
         false
       end
 
+      def default_locale
+        @default_locale
+      end
+  
+      def locales
+        Gollum::LOCALES.map do |lang|
+          { :name => lang,
+            :selected => default_locale == lang
+          }
+        end
+      end
+
     end
   end
 end
